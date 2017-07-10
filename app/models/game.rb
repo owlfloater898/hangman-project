@@ -1,21 +1,22 @@
 class Game
-    attr_accessor :user, :outs, :guesses
+    attr_accessor :user, :outs, :guesses, :was_last_turn_out
     attr_reader :solution, :board, :game_data
 
     @@all = []
 
     def initialize(user)
-        @user = user
-        @solution = get_random_word
-        @board = self.solution.length.times.map{"_"}.join("")
-        @outs = 0
-        @guesses = []
-        @game_data = {}
-        @@all << self
+      @user = user
+      @solution = get_random_word
+      @board = self.solution.length.times.map{"_"}.join("")
+      @outs = 0
+      @was_last_turn_out = false
+      @guesses = []
+      @game_data = {}
+      @@all << self
     end
 
     def get_random_word
-        "RANDOM".upcase
+      "RANDOM".upcase
     end
 
     ## Methods for gameplay
@@ -33,11 +34,12 @@ class Game
     end
 
     def add_out
-        self.outs += 1
+      self.outs += 1
     end
 
     def display_game_status
       system('clear')
+      outs_message
       puts Drawing.draw(outs)
       display_wrong_letters
       display_board
@@ -61,10 +63,10 @@ class Game
 
     def repetitive_or_is_not_a_letter?(letter)
       if !is_a_letter(letter)
-        puts "A letter would be better."
+        puts "A letter would be better! A letter would be better!"
         true
       elsif repetitive?(letter)
-        puts "You have already used that letter"
+        puts "You have already used that letter, fool."
         true
       end
     end
@@ -77,20 +79,41 @@ class Game
         end
     end
 
-    def get_letter(letter)
-      guesses << letter
-      if solution.include?(letter)
-        update_board(letter)
-      else
-        add_out
+    def outs_message
+      if was_last_turn_out
+        case self.outs
+        when 1
+          puts "Yrrrrr OUT!\n"
+        when 3
+          puts "Git outta here! Go on! Git!\n"
+        when 4
+          puts "I don't like your jerk-off name. I don't like your jerk-off face. I don't like your jerk-off behavior, and I don't like you, jerk-off. Do I make myself clear?\n"
+        when 6
+          puts "You are a sad strange little man or woman or non_gender_conforming person or horse's ass, and you have my pity.\n"
+        end
       end
     end
 
-    def ask_for_and_get_letter
+    def get_letter(letter)
+      guesses << letter
+      if solution.include?(letter)
+        self.was_last_turn_out = false
+        update_board(letter)
+      else
+        add_out
+        self.was_last_turn_out = true
+      end
+    end
+
+    def ask_for_and_get_letter(fool_meter)
       ask_for_letter
       letter = get_guess
       if repetitive_or_is_not_a_letter?(letter)
-        ask_for_and_get_letter
+        fool_meter += 1
+        if fool_meter >= 5
+          puts "I don’t give a tuppeny fuck about your moral conundrum, you meat-headed shit sack."
+        end
+        ask_for_and_get_letter(fool_meter)
       else
         get_letter(letter)
       end
@@ -98,7 +121,7 @@ class Game
 
     def turn
       display_game_status
-      ask_for_and_get_letter
+      ask_for_and_get_letter(0)
     end
 
 
@@ -106,18 +129,18 @@ class Game
     #methods for end_game
 
     def win?
-        board == solution
+      board == solution
     end
 
     def lose?
-        outs == 6
+      outs == 6
     end
 
     def display_outcome
       if win?
-        puts "You won!"
+        puts "You won! I know, I'm as surprised as you are!"
       else
-        puts "Sorry the word was #{solution}. Try again."
+        puts "Sorry the word was #{solution}. You are hereby hanged."
       end
     end
 
