@@ -3,11 +3,11 @@ class Game
     attr_reader :solution, :board, :game_data
 
     @@all = []
-    
+
     def initialize(user)
         @user = user
         @solution = get_random_word
-        @board = get_random_word.length.times.map{"_"}.join("")
+        @board = self.solution.length.times.map{"_"}.join("")
         @outs = 0
         @guesses = []
         @game_data = {}
@@ -17,6 +17,8 @@ class Game
     def get_random_word
         "RANDOM".upcase
     end
+
+    ## Methods for gameplay
 
     def display_board
         puts "#{board.chars.join(" ")}"
@@ -30,104 +32,41 @@ class Game
         puts "Used letters: #{wrong_letters}"
     end
 
-    def end_game
-        if win?
-            puts "You won!"
-            game_data[:outcome] = "Win"
-            if user.user_data[:streak] >= 1
-                user.user_data[:streak] += 1
-            else 
-                user.user_data[:streak] = 1
-            end
-            user.user_data[:wins] += 1
-            if user.user_data[:streak] > user.user_data[:longest_win_streak]
-                user.user_data[:longest_win_streak] = user.user_data[:streak] 
-            end
-        else
-            puts "Sorry the word was #{solution}. Try again"
-            game_data[:outcome] = "Loss"
-            if user.user_data[:streak] <= -1
-                user.user_data[:streak] -= 1 
-            else 
-                user.user_data[:streak] = -1
-            end
-            user.user_data[:losses] += 1
-            if user.user_data[:streak] < user.user_data[:longest_loss_streak]
-                user.user_data[:longest_loss_streak] = user.user_data[:streak] 
-            end
-        end
-        if user.user_data[:losses] == 0
-            user.user_data[:ratio] = 1.0
-        else
-            user.user_data[:ratio] = user.user_data[:wins].to_f / user.user_data[:losses].to_f
-            user.user_data[:ratio] = user.user_data[:ratio].round(3)
-        end
+    def add_out
+        self.outs += 1
     end
 
-    def win?
-        board == solution
-    end
-
-    def lose?
-        outs == 6
-    end
-
-    def set_game_data
-        game_data[:board] = board
-        game_data[:wrong_letters] = wrong_letters
-
-        user.history << game_data
-    end
-
-    def play
-        system('clear')
-        until win? || lose?
-            puts Drawing.draw(outs)
-            display_wrong_letters
-            display_board
-            guess_letter
-            system('clear')
-        end
-        set_game_data
-        puts Drawing.draw(outs)
-        display_board
-        end_game
-    end
-
-    def check_for_repeat?(letter)
-        guesses.include?(letter)
-    end
-
-    def is_a_letter(letter)
-        /[a-zA-Z]/.match(letter) != nil
-    end
-    
-    def guess_letter
-        ask_for_letter
-        letter = gets_guess
-        if !is_a_letter(letter) || letter.length != 1
-            puts "Invalid Input"
-            guess_letter
-        elsif check_for_repeat?(letter)
-            puts "You have already used that letter"
-            guess_letter
-        else            
-            guesses << letter
-            if solution.include?(letter) 
-                #The player is correct
-                update_board(letter)
-            else
-                add_out           
-            end
-        end
+    def display_game_status
+      system('clear')
+      puts Drawing.draw(outs)
+      display_wrong_letters
+      display_board
     end
 
     def ask_for_letter
         print "\nEnter a letter: "
     end
 
-    def gets_guess
+    def get_guess
         gets.chomp.upcase
+    end
+
+    def is_a_letter(letter)
+      /[a-zA-Z]/.match(letter) != nil && letter.length == 1
+    end
+
+    def repetitive?(letter)
+      guesses.include?(letter)
+    end
+
+    def repetitive_or_is_not_a_letter?(letter)
+      if !is_a_letter(letter)
+        puts "A letter would be better."
+        true
+      elsif repetitive?(letter)
+        puts "You have already used that letter"
+        true
+      end
     end
 
     def update_board(letter)
@@ -137,8 +76,121 @@ class Game
             end
         end
     end
-    
-    def add_out
-        self.outs += 1
+
+    def get_letter(letter)
+      guesses << letter
+      if solution.include?(letter)
+        update_board(letter)
+      else
+        add_out
+      end
     end
+
+    def ask_for_and_get_letter
+      ask_for_letter
+      letter = get_guess
+      if repetitive_or_is_not_a_letter?(letter)
+        ask_for_and_get_letter
+      else
+        get_letter(letter)
+      end
+    end
+
+    def turn
+      display_game_status
+      ask_for_and_get_letter
+    end
+
+
+
+    #methods for end_game
+
+    def win?
+        board == solution
+    end
+
+    def lose?
+        outs == 6
+    end
+
+    def display_outcome
+      if win?
+        puts "You won!"
+      else
+        puts "Sorry the word was #{solution}. Try again."
+      end
+    end
+
+    def set_game_outcome
+      if win?
+        game_data[:outcome] = "Win"
+      else
+        game_data[:outcome] = "Loss"
+      end
+    end
+
+    def set_game_data
+        game_data[:board] = board
+        game_data[:wrong_letters] = wrong_letters
+        set_game_outcome
+        user.history << game_data
+    end
+
+    def set_streak_wins
+      if user.user_data[:streak] >= 1
+          user.user_data[:streak] += 1
+      else
+          user.user_data[:streak] = 1
+      end
+      user.user_data[:wins] += 1
+      if user.user_data[:streak] > user.user_data[:longest_win_streak]
+          user.user_data[:longest_win_streak] = user.user_data[:streak]
+      end
+    end
+
+    def set_streak_losses
+      if user.user_data[:streak] <= -1
+          user.user_data[:streak] -= 1
+      else
+          user.user_data[:streak] = -1
+      end
+      user.user_data[:losses] += 1
+      if user.user_data[:streak] < user.user_data[:longest_loss_streak]
+          user.user_data[:longest_loss_streak] = user.user_data[:streak]
+      end
+    end
+
+    def set_ratio
+      if user.user_data[:losses] == 0
+          user.user_data[:ratio] = 1.0
+      else
+          user.user_data[:ratio] = user.user_data[:wins].to_f / user.user_data[:losses].to_f
+          user.user_data[:ratio] = user.user_data[:ratio].round(3)
+      end
+    end
+
+    def set_user_data
+      if win?
+        self.set_streak_wins
+      else
+        self.set_streak_losses
+      end
+      self.set_ratio
+    end
+
+    def end_game
+      set_game_data
+      set_user_data
+      display_game_status
+      display_outcome
+    end
+
+#####
+    def play
+      until win? || lose?
+        self.turn
+      end
+      end_game
+    end
+
 end
