@@ -30,44 +30,68 @@ class Game
         puts "Used letters: #{wrong_letters}"
     end
 
-    def display_end_message
+    def end_game
         if win?
             puts "You won!"
             game_data[:outcome] = "Win"
+            if user.user_data[:streak] >= 1
+                user.user_data[:streak] += 1
+            else 
+                user.user_data[:streak] = 1
+            end
+            user.user_data[:wins] += 1
+            if user.user_data[:streak] > user.user_data[:longest_win_streak]
+                user.user_data[:longest_win_streak] = user.user_data[:streak] 
+            end
         else
             puts "Sorry the word was #{solution}. Try again"
             game_data[:outcome] = "Loss"
+            if user.user_data[:streak] <= -1
+                user.user_data[:streak] -= 1 
+            else 
+                user.user_data[:streak] = -1
+            end
+            user.user_data[:losses] += 1
+            if user.user_data[:streak] < user.user_data[:longest_loss_streak]
+                user.user_data[:longest_loss_streak] = user.user_data[:streak] 
+            end
+        end
+        if user.user_data[:losses] == 0
+            user.user_data[:ratio] = 1.0
+        else
+            user.user_data[:ratio] = user.user_data[:wins].to_f / user.user_data[:losses].to_f
+            user.user_data[:ratio] = user.user_data[:ratio].round(3)
         end
     end
 
-    def display_welcome_message
-        puts "Welcome to Hangman"
-    end
-    
     def win?
         board == solution
     end
 
     def lose?
-        outs == 7
+        outs == 6
+    end
+
+    def set_game_data
+        game_data[:board] = board
+        game_data[:wrong_letters] = wrong_letters
+
+        user.history << game_data
     end
 
     def play
         system('clear')
-        display_welcome_message
         until win? || lose?
-            #puts Drawing.draw(outs)
+            puts Drawing.draw(outs)
             display_wrong_letters
             display_board
             guess_letter
             system('clear')
         end
-        game_data[:board] = board
-        game_data[:wrong_letters] = wrong_letters
-        user.history << game_data
-        #puts Drawing.draw(outs)
+        set_game_data
+        puts Drawing.draw(outs)
         display_board
-        display_end_message
+        end_game
     end
 
     def check_for_repeat?(letter)
