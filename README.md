@@ -17,11 +17,7 @@
 
 # Desirables
 # The words should be picked from an online source
-# We want to have an infinite loop that asks the user if he wants to continue
 # Scoreboard
-# user array
-# ask user for his name
-# search for user by name
 # Diffrent difficulty levels
 
 # Current Issues

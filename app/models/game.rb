@@ -3,7 +3,6 @@ class Game
     attr_reader :solution, :board, :game_data
 
     @@all = []
-
     
     def initialize(user)
         @user = user
@@ -57,6 +56,7 @@ class Game
         system('clear')
         display_welcome_message
         until win? || lose?
+            #puts Drawing.draw(outs)
             display_wrong_letters
             display_board
             guess_letter
@@ -65,6 +65,7 @@ class Game
         game_data[:board] = board
         game_data[:wrong_letters] = wrong_letters
         user.history << game_data
+        #puts Drawing.draw(outs)
         display_board
         display_end_message
     end
@@ -78,8 +79,8 @@ class Game
     end
     
     def guess_letter
-        ask_for_input
-        letter = gets_input
+        ask_for_letter
+        letter = gets_guess
         if !is_a_letter(letter) || letter.length != 1
             puts "Invalid Input"
             guess_letter
@@ -97,12 +98,12 @@ class Game
         end
     end
 
-    def ask_for_input
+    def ask_for_letter
         print "\nEnter a letter: "
     end
 
-    def gets_input
-        guess = gets.chomp.upcase
+    def gets_guess
+        gets.chomp.upcase
     end
 
     def update_board(letter)
