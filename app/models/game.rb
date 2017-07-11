@@ -52,7 +52,8 @@ class Game
       else
         Drawing.draw_hanged
       end
-
+    end
+    
     def ask_for_letter
         print "\nEnter a letter: "
     end
