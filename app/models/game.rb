@@ -1,6 +1,6 @@
 class Game
     attr_accessor :user, :outs, :guesses, :was_last_turn_out
-    attr_reader :solution, :board, :game_data
+    attr_reader :solution, :board, :game_data, :definition
 
     @@all = []
 
@@ -8,6 +8,7 @@ class Game
       @user = user
       max_length = get_length_for_difficulty(difficulty)
       @solution = get_random_word(max_length)
+      @definition = Word.definition(@solution)
       @board = self.solution.length.times.map{"_"}.join("")
       @outs = 0
       @was_last_turn_out = false
@@ -157,7 +158,8 @@ class Game
       if win?
         puts "You won! I know, I'm as surprised as you are!"
       else
-        puts "Sorry the word was #{solution}. You are hereby hanged."
+        puts "Sorry the word was #{solution}; it means #{definition}."
+        puts "\e[33mYou are hereby hanged.\e[0m"
       end
     end
 

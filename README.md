@@ -5,6 +5,7 @@
 This Hangman game is a Command Line Interface program. It features a menu and tracks game and user history.
 It get's its words from Wordnik's API.
 It has different difficulty levels.
+If you loose it gives you the definition of the word
 
 ## How to Use Hangman Program
 ------------

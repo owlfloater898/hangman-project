@@ -7,4 +7,4 @@ require_relative '../app/models/menu.rb'
 require_relative '../app/models/word.rb'
 
 Menu.menu_action
-#Word.get_random_word
+
