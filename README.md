@@ -28,5 +28,5 @@ The Hangman program currently contains a Menu class, a User class, and a Game cl
 
 ## Authors
 -----------
-* Luis  blahblah@gmail.com
+* Luis Arita luisarita@gmail.com
 * Yakov Kiffel yakov.kiffel@gmail.com

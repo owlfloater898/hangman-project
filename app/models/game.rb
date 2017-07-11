@@ -90,15 +90,20 @@ class Game
 
     def outs_message
       if was_last_turn_out
+        message = nil
         case self.outs
         when 1
-          puts "Yrrrrr OUT!\n"
+          message = "Yrrrrr OUT!\n"
         when 3
-          puts "Git outta here! Go on! Git!\n"
+          message = "Git outta here! Go on! Git!\n"
         when 4
-          puts "I don't like your jerk-off name. I don't like your jerk-off face. I don't like your jerk-off behavior, and I don't like you, jerk-off. Do I make myself clear?\n"
+          message =  "I don't like your jerk-off name. I don't like your jerk-off face. I don't like your jerk-off behavior, and I don't like you, jerk-off. Do I make myself clear?\n"
         when 6
-          puts "You are a sad strange little man or woman or non_gender_conforming person or horse's ass, and you have my pity.\n"
+          message =  "You are a sad strange little man or woman or non_gender_conforming person or horse's ass, and you have my pity.\n"
+        end
+        if message != nil
+          #print in red
+          puts "\e[31m#{message}\e[0m"
         end
       end
     end
