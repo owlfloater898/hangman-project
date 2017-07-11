@@ -40,11 +40,20 @@ class Game
     def display_game_status
       system('clear')
       outs_message
-      puts Drawing.draw(outs)
+      Drawing.draw_outs(outs)
       display_wrong_letters
       display_board
     end
-
+    
+    def display_end_game
+      system('clear')
+      if win?
+        Drawing.draw_free
+      else
+        Drawing.draw_hanged
+      end
+    end
+    
     def ask_for_letter
         print "\nEnter a letter: "
     end
@@ -124,8 +133,6 @@ class Game
       ask_for_and_get_letter(0)
     end
 
-
-
     #methods for end_game
 
     def win?
@@ -204,7 +211,7 @@ class Game
     def end_game
       set_game_data
       set_user_data
-      display_game_status
+      display_end_game
       display_outcome
     end
 
