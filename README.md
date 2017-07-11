@@ -5,7 +5,8 @@
 This Hangman game is a Command Line Interface program. It features a menu and tracks game and user history.
 It get's its words from Wordnik's API.
 It has different difficulty levels.
-If you loose it gives you the definition of the word
+If you loose it gives you the definition of the word.
+It saves all progress if you exit the program and loads it every time
 
 ## How to Use Hangman Program
 ------------
@@ -23,7 +24,7 @@ The Hangman program currently contains a Menu class, a User class, and a Game cl
 
 ## How to Contribute to the Program
 -----------
-* The game and user data is lost once the program is exited. The program could be connected to a database so that all the game and user data could be saved even when the program is exited.
+* To contribute to the program simply do a fork and send a pull request
 
 ## Authors
 -----------

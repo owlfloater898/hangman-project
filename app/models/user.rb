@@ -8,6 +8,10 @@ class User
         @@all
     end
 
+    def self.all=(value)
+      @@all = value
+    end
+
     def initialize(name)
       @name = name
       @history = []

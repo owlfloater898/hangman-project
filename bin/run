@@ -5,6 +5,9 @@ require_relative '../app/models/user.rb'
 require_relative '../app/models/drawing.rb'
 require_relative '../app/models/menu.rb'
 require_relative '../app/models/word.rb'
+require_relative '../app/models/data.rb'
+
+require 'yaml'
 
 Menu.menu_action
 

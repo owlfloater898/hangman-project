@@ -4,6 +4,14 @@ class Game
 
     @@all = []
 
+    def self.all
+        @@all
+    end
+
+    def self.all=(value)
+      @@all = value
+    end
+    
     def initialize(user, difficulty)
       @user = user
       max_length = get_length_for_difficulty(difficulty)

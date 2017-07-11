@@ -18,8 +18,8 @@
     end
 
     def self.menu_action
+      Data.load
       user = nil
-
       loop do
         system('clear')
         option = menu
@@ -39,6 +39,7 @@
         when "6"
           user = nil
         when "7"
+          Data.save
           break
         else
           puts "Invalid input"
