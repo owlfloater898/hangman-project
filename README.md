@@ -17,7 +17,6 @@
 
 # Desirables
 # The words should be picked from an online source
-# Scoreboard
 # Diffrent difficulty levels
 # Streak in history
 # 

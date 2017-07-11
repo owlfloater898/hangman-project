@@ -1,8 +1,8 @@
 class Drawing
-  def self.draw(outs)
+  def self.draw_outs(outs)
     case outs
     when 0
-" ┌────┐
+puts " ┌────┐
  │    │
       │
       │
@@ -11,7 +11,7 @@ class Drawing
 ──────┴──"
 
     when 1
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
       │
@@ -20,7 +20,7 @@ class Drawing
 ──────┴──"
 
     when 2
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
  │    │
@@ -29,7 +29,7 @@ class Drawing
 ──────┴──"
 
     when 3
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
  ├┐   │
@@ -38,7 +38,7 @@ class Drawing
 ──────┴──"
 
     when 4
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
 ┌┼┐   │
@@ -47,7 +47,7 @@ class Drawing
 ──────┴──"
 
     when 5
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
 ┌┼┐   │
@@ -55,13 +55,58 @@ class Drawing
       │
 ──────┴──"
     when 6
-" ┌────┐
+puts " ┌────┐
  │    │
  ▄    │
 ┌┼┐   │
 ┌┴┐   │
       │
 ──────┴──"        
+    end
+  end
+
+  def self.draw_free
+    3.times do
+        system('clear')
+        puts " ┌────┐
+      │
+* * * │
+  ▄   │
+ └┼┘  │
+ ┌┴┐  │
+──────┴──"
+        sleep(0.25)
+        system('clear')
+        puts " ┌────┐
+      │
+      │
+  ▄   │
+ ┌┼┐  │
+ ┌┴┐  │
+──────┴──"   
+        sleep(0.25)  
+    end
+  end
+  def self.draw_hanged
+        3.times do
+        system('clear')
+        puts " ┌────┐
+ │    │
+ ▄    │
+┌┼┐   │
+┌┴┐   │
+      │
+──────┴──"      
+        sleep(0.25)
+        system('clear')
+        puts " ┌────┐
+ │    │
+  ▄   │
+┌┼┐.  │
+┌┴┐.  │
+   .  │
+──────┴──"      
+        sleep(0.25)  
     end
   end
 end

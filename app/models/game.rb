@@ -38,7 +38,18 @@ class Game
 
     def display_game_status
       system('clear')
-      puts Drawing.draw(outs)
+      Drawing.draw_outs(outs)
+      display_wrong_letters
+      display_board
+    end
+    
+    def display_end_game
+      system('clear')
+      if win?
+        Drawing.draw_free
+      else
+        Drawing.draw_hanged
+      end
       display_wrong_letters
       display_board
     end
@@ -100,8 +111,6 @@ class Game
       display_game_status
       ask_for_and_get_letter
     end
-
-
 
     #methods for end_game
 
@@ -181,7 +190,7 @@ class Game
     def end_game
       set_game_data
       set_user_data
-      display_game_status
+      display_end_game
       display_outcome
     end
 
