@@ -6,11 +6,13 @@
       display_welcome_message
       puts "\nMENU"
       puts "===="
-      puts "1. New Game"
-      puts "2. View Games History"
-      puts "3. View Leaderboard."
-      puts "4. Exit session to change player."
-      puts "5. Exit Program."
+      puts "1. New Easy Game"
+      puts "2. New Medium Game"
+      puts "3. New Hard Game"
+      puts "4. View Games History"
+      puts "5. View Leaderboard."
+      puts "6. Exit session to change player."
+      puts "7. Exit Program."
       print "\nPlease select an option: "
       option = gets.chomp
     end
@@ -22,21 +24,21 @@
         system('clear')
         option = menu
         case option
-        when "1"
+        when "1", "2", "3"
           if user == nil
               user = User.get_user
           end
-          user.start_game
-        when "2"
+          user.start_game(option)
+        when "4"
           if user == nil
               user = User.get_user
           end
           user.display_history
-        when "3"
-          User.display_leaderboard
-        when "4"
-          user = nil
         when "5"
+          User.display_leaderboard
+        when "6"
+          user = nil
+        when "7"
           break
         else
           puts "Invalid input"

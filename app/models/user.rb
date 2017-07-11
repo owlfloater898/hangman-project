@@ -89,8 +89,8 @@ class User
       user
     end
 
-    def start_game
-      new_game = Game.new(self)
+    def start_game(difficulty)
+      new_game = Game.new(self, difficulty)
       new_game.play
     end
 

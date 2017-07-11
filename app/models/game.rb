@@ -4,9 +4,10 @@ class Game
 
     @@all = []
 
-    def initialize(user)
+    def initialize(user, difficulty)
       @user = user
-      @solution = get_random_word(12)
+      max_length = get_length_for_difficulty(difficulty)
+      @solution = get_random_word(max_length)
       @board = self.solution.length.times.map{"_"}.join("")
       @outs = 0
       @was_last_turn_out = false
@@ -15,6 +16,10 @@ class Game
       @@all << self
     end
 
+    def get_length_for_difficulty(difficulty)
+      (4 - difficulty.to_i) * 4
+    end
+    
     def get_random_word(max_length)
       Word.get_random_word(max_length).upcase
     end
