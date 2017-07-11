@@ -3,6 +3,7 @@
 ## Features of Hangman Program
 ------------
 This Hangman game is a Command Line Interface program. It features a menu and tracks game and user history.
+It get's its words from Wordnik's API.
 
 ## How to Use Hangman Program
 ------------
@@ -20,8 +21,6 @@ The Hangman program currently contains a Menu class, a User class, and a Game cl
 
 ## How to Contribute to the Program
 -----------
-* Currently the program relies on a set array of words as its word bank. Instead, words could be drawn from an API word bank.
-
 * The program has no difficulty levels. It could have levels of easy, medium, and hard, and track the game and user data for each level.
 
 * The game and user data is lost once the program is exited. The program could be connected to a database so that all the game and user data could be saved even when the program is exited.

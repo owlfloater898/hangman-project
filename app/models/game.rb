@@ -6,7 +6,7 @@ class Game
 
     def initialize(user)
       @user = user
-      @solution = get_random_word
+      @solution = get_random_word(12)
       @board = self.solution.length.times.map{"_"}.join("")
       @outs = 0
       @was_last_turn_out = false
@@ -15,8 +15,8 @@ class Game
       @@all << self
     end
 
-    def get_random_word
-      "RANDOM".upcase
+    def get_random_word(max_length)
+      Word.get_random_word(max_length).upcase
     end
 
     ## Methods for gameplay
